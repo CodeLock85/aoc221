@@ -1,19 +1,4 @@
 fun main() {
-
-    fun part1(input: List<String>): Int {
-        val elvenInventories = elvenInventoriesFrom(input)
-        return elvenInventories.maxBy { it.value }.value
-    }
-
-    fun part2(input: List<String>): Int {
-        val elvenInventories = elvenInventoriesFrom(input)
-
-        return elvenInventories.values
-            .sortedDescending()
-            .take(3)
-            .sum()
-    }
-
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day01_test")
     check(part1(testInput) == 24000)
@@ -24,20 +9,31 @@ fun main() {
     println(part2(input))
 }
 
-private fun elvenInventoriesFrom(input: List<String>): MutableMap<Int, Int> {
-    val elvenInventories = mutableMapOf<Int, Int>()
-    var currentElvId = 1
+private fun part1(input: List<String>): Int {
+    val elvenInventories = elvenInventoriesFrom(input)
+    return elvenInventories.max()
+}
+
+fun part2(input: List<String>): Int {
+    val elvenInventories = elvenInventoriesFrom(input)
+    return elvenInventories
+        .sortedDescending()
+        .take(3)
+        .sum()
+}
+
+private fun elvenInventoriesFrom(input: List<String>): List<Int> {
+    val elvenInventories = mutableListOf<Int>()
     var currentInventory = 0
     input.forEach {
         if (it.isBlank()) {
-            elvenInventories[currentElvId] = currentInventory
-            currentElvId++
+            elvenInventories.add(currentInventory)
             currentInventory = 0
         } else {
             val currentValue = it.toInt()
             currentInventory += currentValue
         }
     }
-    elvenInventories[currentElvId] = currentInventory
+    elvenInventories.add(currentInventory)
     return elvenInventories
 }
